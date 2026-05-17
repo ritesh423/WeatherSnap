@@ -10,6 +10,8 @@ import com.ritesh.weathersnap.ui.report.CreateReportScreen
 import com.ritesh.weathersnap.ui.savedreports.SavedReportsScreen
 import com.ritesh.weathersnap.ui.weather.WeatherScreen
 
+const val CAPTURED_IMAGE_KEY = "captured_image"
+
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
@@ -26,14 +28,22 @@ fun AppNavGraph(
                 onReportsClick = { navController.navigate(Routes.SavedReports.route) }
             )
         }
-        composable(Routes.CreateReport.route) {
+        composable(Routes.CreateReport.route) { entry ->
             CreateReportScreen(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onOpenCamera = { navController.navigate(Routes.Camera.route) },
+                savedStateHandle = entry.savedStateHandle
             )
         }
         composable(Routes.Camera.route) {
             CameraScreen(
-                onClose = { navController.popBackStack() }
+                onClose = { navController.popBackStack() },
+                onImageCaptured = { path ->
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(CAPTURED_IMAGE_KEY, path)
+                    navController.popBackStack()
+                }
             )
         }
         composable(Routes.SavedReports.route) {
