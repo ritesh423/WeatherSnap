@@ -1,5 +1,6 @@
 package com.ritesh.weathersnap.di
 
+import com.google.gson.Gson
 import com.ritesh.weathersnap.BuildConfig
 import com.ritesh.weathersnap.data.remote.OpenMeteoApi
 import dagger.Module
@@ -48,4 +49,8 @@ object NetworkModule {
     @Singleton
     fun provideOpenMeteoApi(retrofit: Retrofit): OpenMeteoApi =
         retrofit.create(OpenMeteoApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson = Gson()
 }
