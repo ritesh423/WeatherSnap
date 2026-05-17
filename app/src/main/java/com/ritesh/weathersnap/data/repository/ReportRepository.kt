@@ -27,4 +27,6 @@ class ReportRepository @Inject constructor(
     suspend fun update(report: ReportEntity) = dao.update(report)
 
     suspend fun deleteById(id: Long) = dao.deleteById(id)
+
+    suspend fun deleteAllDrafts() = dao.deleteByStatus(ReportEntity.STATUS_DRAFT)
 }

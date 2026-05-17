@@ -18,6 +18,9 @@ interface ReportDao {
     @Query("DELETE FROM reports WHERE id = :id")
     suspend fun deleteById(id: Long)
 
+    @Query("DELETE FROM reports WHERE status = :status")
+    suspend fun deleteByStatus(status: String)
+
     @Query("SELECT * FROM reports WHERE id = :id")
     suspend fun getById(id: Long): ReportEntity?
 

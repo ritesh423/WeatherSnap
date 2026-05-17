@@ -28,6 +28,9 @@ class WeatherViewModel @Inject constructor(
     private val _suggestions = MutableStateFlow<List<City>>(emptyList())
     val suggestions: StateFlow<List<City>> = _suggestions.asStateFlow()
 
+    private val _isSearchingCities = MutableStateFlow(false)
+    val isSearchingCities: StateFlow<Boolean> = _isSearchingCities.asStateFlow()
+
     private val _state = MutableStateFlow<WeatherUiState>(WeatherUiState.Idle)
     val state: StateFlow<WeatherUiState> = _state.asStateFlow()
 
@@ -38,11 +41,18 @@ class WeatherViewModel @Inject constructor(
     fun onQueryChange(text: String) {
         _inputText.value = text
         _searchTrigger.value = text
+        if (text.trim().length <= 2) {
+            _isSearchingCities.value = false
+            _suggestions.value = emptyList()
+        } else {
+            _isSearchingCities.value = true
+        }
     }
 
     fun onCitySelected(city: City) {
         _inputText.value = city.displayName
         _suggestions.value = emptyList()
+        _isSearchingCities.value = false
         viewModelScope.launch {
             _state.value = WeatherUiState.Loading
             repository.getWeather(city)
@@ -59,7 +69,9 @@ class WeatherViewModel @Inject constructor(
                 .debounce(300)
                 .distinctUntilChanged()
                 .collect { query ->
-                    _suggestions.value = repository.searchCities(query).getOrDefault(emptyList())
+                    val results = repository.searchCities(query).getOrDefault(emptyList())
+                    _suggestions.value = results
+                    _isSearchingCities.value = false
                 }
         }
     }
