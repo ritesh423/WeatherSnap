@@ -9,8 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.ritesh.weathersnap.navigation.AppNavGraph
 import com.ritesh.weathersnap.ui.theme.WeatherSnapTheme
-import com.ritesh.weathersnap.ui.weather.WeatherScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,10 +23,9 @@ class MainActivity : ComponentActivity() {
             WeatherSnapTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
                     Surface(modifier = Modifier.fillMaxSize()) {
-                        WeatherScreen(
-                            modifier = Modifier.padding(padding),
-                            onCreateReport = {},
-                            onReportsClick = {}
+                        AppNavGraph(
+                            navController = rememberNavController(),
+                            modifier = Modifier.padding(padding)
                         )
                     }
                 }
