@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -31,6 +33,7 @@ fun SearchCard(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearchClick: () -> Unit,
+    isLoading: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -47,6 +50,17 @@ fun SearchCard(
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.weight(1f),
+                    trailingIcon = {
+                        if (isLoading) {
+                            CircularProgressIndicator(
+                                color = Lime,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier
+                                    .padding(end = 12.dp)
+                                    .size(18.dp)
+                            )
+                        }
+                    },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Lime,
                         unfocusedBorderColor = OnSurfaceMuted.copy(alpha = 0.4f),

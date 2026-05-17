@@ -47,6 +47,7 @@ fun WeatherScreen(
 ) {
     val query by viewModel.inputText.collectAsStateWithLifecycle()
     val suggestions by viewModel.suggestions.collectAsStateWithLifecycle()
+    val isSearchingCities by viewModel.isSearchingCities.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
@@ -77,7 +78,8 @@ fun WeatherScreen(
         SearchCard(
             query = query,
             onQueryChange = viewModel::onQueryChange,
-            onSearchClick = {}
+            onSearchClick = {},
+            isLoading = isSearchingCities
         )
 
         AnimatedVisibility(visible = suggestions.isNotEmpty()) {
